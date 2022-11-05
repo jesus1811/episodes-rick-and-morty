@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
-@Controller('api/episodes')
+@Controller('episodes')
 export class EpisodesController {
   constructor(private episodesService: EpisodesService) {}
 
@@ -9,7 +9,7 @@ export class EpisodesController {
     return this.episodesService.getAllEpisodes();
   }
 
-  @Get('api/:episode')
+  @Get('episode')
   getEpisode(
     @Query('chapter') chapter: number,
     @Query('season') season: number,
