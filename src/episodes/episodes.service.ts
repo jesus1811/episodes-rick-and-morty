@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { pool } from 'src/database/conexion';
-import { ReadEpisodeDto } from './dto/read-episode.dto';
-import { ReadEpisodesDto } from './dto/read-episodes.dto';
+import { Episode } from './entities/episodes.entity';
 
 @Injectable()
 export class EpisodesService {
-  async getAllEpisodes(): Promise<ReadEpisodesDto[]> {
+  async findAll(): Promise<Episode[]> {
     try {
       const response = await pool.query(
         'SELECT season,chapter,name,video FROM episode',
@@ -15,16 +14,14 @@ export class EpisodesService {
       return [];
     }
   }
-  async getEpisode({
-    chapter,
-    season,
-  }: ReadEpisodeDto): Promise<ReadEpisodesDto> {
+  async findOne({ chapter, season }: Partial<Episode>): Promise<Episode> {
     try {
       const response = await pool.query(
         'SELECT season,chapter,name,video FROM episode WHERE chapter=$1 and season=$2',
         [chapter, season],
       );
-      return response.rows[0];
+      const [episode] = response.rows;
+      return episode;
     } catch (err) {
       return { id: null, chapter: null, name: '', season: null, video: '' };
     }

@@ -5,16 +5,13 @@ export class EpisodesController {
   constructor(private episodesService: EpisodesService) {}
 
   @Get()
-  getAllEpisode() {
-    return this.episodesService.getAllEpisodes();
+  findAll() {
+    return this.episodesService.findAll();
   }
 
   @Get(':chapter')
-  getEpisode(
-    @Param('chapter') chapter: number,
-    @Query('season') season: number,
-  ) {
+  findOne(@Param('chapter') chapter: number, @Query('season') season: number) {
     if (!season || !chapter) return { message: 'error request', code: '400' };
-    return this.episodesService.getEpisode({ chapter, season });
+    return this.episodesService.findOne({ chapter, season });
   }
 }
