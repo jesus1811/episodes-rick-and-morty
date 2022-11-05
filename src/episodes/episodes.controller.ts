@@ -1,6 +1,6 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { EpisodesService } from './episodes.service';
-@Controller('episodes')
+@Controller('api/episodes')
 export class EpisodesController {
   constructor(private episodesService: EpisodesService) {}
 
@@ -9,11 +9,12 @@ export class EpisodesController {
     return this.episodesService.getAllEpisodes();
   }
 
-  @Get('episode')
+  @Get(':chapter')
   getEpisode(
-    @Query('chapter') chapter: number,
+    @Param('chapter') chapter: number,
     @Query('season') season: number,
   ) {
+    if (!season || !chapter) return { message: 'error request', code: '400' };
     return this.episodesService.getEpisode({ chapter, season });
   }
 }
